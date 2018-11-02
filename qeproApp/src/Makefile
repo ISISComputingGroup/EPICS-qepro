@@ -12,7 +12,8 @@ USR_INCLUDES += -I$(SEABREEZE)/vendor/SeaBreeze/include
 LIBRARY_IOC += qepro
 qepro_SRCS += drvUSBQEPro.cpp drvUSBQEProOBP.cpp
 
-qepro_LIBS += seabreeze asyn oncrpc
+qepro_LIBS += seabreeze asyn
+qepro_LIBS_WIN32 += oncrpc
 qepro_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 
