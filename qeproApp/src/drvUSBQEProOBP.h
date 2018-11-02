@@ -128,15 +128,17 @@ typedef struct OBPHeader_s
     unsigned int   bytes_remaining;     // 40-43
 } OBPHeader;                            // 44 bytes total
 
+#pragma pack(push,1)
 typedef struct OBP_Metadata_s
 {                                       // byte offset
     //-- metadata --
     unsigned int       spec_count;          // 0-3
-    unsigned long long tick_count __attribute__((packed)); // 4-11 (packed to enforce integration_time alignment)
+    unsigned long long tick_count; // 4-11 (packed to enforce integration_time alignment)
     unsigned int       integration_time ;    // 12-15
     unsigned short     reserved1;           // 16-17
     unsigned char      trigger_mode;        // 18
     unsigned char      reserved2[13];       // 19-31
 } OBP_Metadata; // 32 bytes total
+#pragma pack(pop)
 
 #endif

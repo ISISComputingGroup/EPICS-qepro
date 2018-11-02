@@ -1,11 +1,10 @@
 #ifndef DRVUSBQEPRO_H
 #define DRVUSBQEPRO_H
 #include <iocsh.h>
-#include <epicsExport.h>
 #include <asynPortDriver.h>
-
+#ifndef _WIN32
 #include <libusb-1.0/libusb.h>
-
+#endif
 #include <fstream>
 
 #include "drvUSBQEProOBP.h"
@@ -179,8 +178,9 @@ private:
     static int zeroIndex;
 
     //libusb_hotplug_callback_handle hp[2];
+#ifndef _WIN32
     libusb_context *context;
-
+#endif
     static const int OOI_VENDOR_ID = 0x2457;
 
     long *device_ids;

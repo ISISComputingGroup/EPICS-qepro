@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#ifdef _WIN32
+#pragma warning( disable : 4290 )
+#else
 #include <unistd.h>
-
+#endif
 #include "drvUSBQEPro.h"
 #include "drvUSBQEProOBP.h"
 

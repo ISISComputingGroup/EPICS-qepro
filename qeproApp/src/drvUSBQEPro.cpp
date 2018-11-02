@@ -3,14 +3,17 @@
 #include <epicsMutex.h>
 #include <epicsEvent.h>
 #include <iocsh.h>
-#include <epicsExport.h>
 #include <alarm.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+#pragma warning( disable : 4290 )
+#else
 #include <unistd.h>
 #include <libusb-1.0/libusb.h>
+#endif
 #include <sys/stat.h>
 
 #include <fstream>
@@ -22,6 +25,8 @@
 #include "drvUSBQEPro.h"
 #include "drvUSBQEProWorker.h"
 #include "api/SeaBreezeWrapper.h"
+
+#include <epicsExport.h>
 
 #define NUM_QEPRO_PARAMS ((int)(&LAST_QEPRO_PARAM - &FIRST_QEPRO_PARAM + 1))
 
@@ -111,9 +116,9 @@ drvUSBQEPro::drvUSBQEPro(const char *portName, int maxPoints, double laser)
     // Set up initial USB context. Must be done before starting thread,
     // or attempting comms to device.
     int rc = 0;
-    context = NULL;
+//    context = NULL;
     asynPrint(pasynUserSelf, ASYN_TRACE_FLOW, "drvUSBQEPro: init usb\n");
-    rc = libusb_init(&context);
+//    rc = libusb_init(&context);
     assert(rc == 0);
 
     // General initialisation
@@ -845,10 +850,10 @@ asynStatus drvUSBQEPro::writeInt32(asynUser *pasynUser, epicsInt32 value)
         //           thermoElectric.setTECEnable(true);
         //           thermoElectric.setDetectorSetPointCelsius(temp);
         //        } else return statusError;
-        else if (function == decouple) {
+        else if (function == P_decouple) {
             // Check if implmemented in QEPro
         }
-        else if (function == ledIndicator) {
+        else if (function == P_ledIndicator) {
             // Check if implmemented in QEPro
         }
 
@@ -947,13 +952,13 @@ void drvUSBQEPro::test_connection() {
 
     // Check the USB device list to see if the Ocean Optics spectrometer
     //context = NULL;
+#ifndef _WIN32
     libusb_device **list;
     int rc = 0;
     ssize_t count = 0;
 
     count = libusb_get_device_list(context, &list);
     assert(count > 0);
-
     for (ssize_t idx = 0; idx < count; ++idx) {
         libusb_device *device = list[idx];
         libusb_device_descriptor desc = {0};
@@ -966,7 +971,9 @@ void drvUSBQEPro::test_connection() {
         }
     }
     libusb_free_device_list(list, 1);
-
+#else
+    found_ooi_spectrometer = true;
+#endif
     asynPrint(pasynUserSelf,
             ASYN_TRACE_FLOW,
             "test_connection: found_ooi_spectrometer = %d\n",
@@ -983,8 +990,8 @@ void drvUSBQEPro::test_connection() {
         // If this sleep is not present, the IOC will segfault on startup
         // if the spectrometer is already connected to the USB port.
         if (ioc_starting) {
-            unsigned int sleep_time = 500000;
-            usleep(sleep_time);
+            double sleep_time = 0.5;
+            epicsThreadSleep(sleep_time);
             ioc_starting = false;
         }
         api->probeDevices();
