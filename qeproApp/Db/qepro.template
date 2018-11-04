@@ -202,7 +202,7 @@ record(waveform, "$(PREFIX):XaxisNm_rbv") {
 record(waveform, "$(PREFIX):XaxisRs_rbv") {
     field(DESC, "Spectrum Raman shift values")
  	field(DTYP, "asynFloat64ArrayIn")
-    field(EGU,  "cm-1")
+    field(EGU,  "cm^-1")
     field(NELM, "$(SIZE)")
     field(FTVL, "DOUBLE")
 	field(SCAN, "I/O Intr")
@@ -232,7 +232,7 @@ record(bo, "$(PREFIX):XAxisMode") {
 record(waveform, "$(PREFIX):Spectrum_rbv") {
     field(DTYP, "asynFloat64ArrayIn")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))Spectrum")
-    field(EGU,  "counts")
+    field(EGU,  "count")
     field(PREC, "0")
     field(NELM, "$(SIZE)")
     field(FTVL, "DOUBLE")
@@ -286,7 +286,7 @@ record(bo, "$(PREFIX):DarkValidOverride") {
 record(waveform, "$(PREFIX):DarkSpectrum_rbv") {
     field(DTYP, "asynFloat64ArrayIn")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))DarkSpectrum")
-    field(EGU,  "counts")
+    field(EGU,  "count")
     field(PREC, "0")
     field(NELM, "$(SIZE)")
     field(FTVL, "DOUBLE")
@@ -340,7 +340,7 @@ record(waveform, "$(PREFIX):BGSpectrum_rbv") {
     field(DESC, "Background spectrum")
     field(DTYP, "asynFloat64ArrayIn")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))BGSpectrum")
-    field(EGU,  "counts")
+    field(EGU,  "count")
     field(PREC, "0")
     field(NELM, "$(SIZE)")
     field(FTVL, "DOUBLE")
@@ -389,7 +389,7 @@ record(ai, "$(PREFIX):ROI0Sum_rbv") {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ROI0Sum")
     field(SCAN, "I/O Intr")
-    field(EGU,  "counts")
+    field(EGU,  "count")
     field(PREC, "0")
 }
 
@@ -397,7 +397,7 @@ record(ai, "$(PREFIX):ROI1Sum_rbv") {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))ROI1Sum")
     field(SCAN, "I/O Intr")
-    field(EGU,  "counts")
+    field(EGU,  "count")
     field(PREC, "0")
 }
 
