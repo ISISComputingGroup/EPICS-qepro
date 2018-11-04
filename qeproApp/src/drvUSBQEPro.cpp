@@ -1,3 +1,4 @@
+#include <epicsStdio.h>
 #include <epicsString.h>
 #include <epicsTimer.h>
 #include <epicsMutex.h>
@@ -1412,7 +1413,7 @@ std::string drvUSBQEPro::create_file_name(
             functionName,
             file_name);
 
-    snprintf(full_file_name,
+    epicsSnprintf(full_file_name,
             BUF_SIZE,
             "%s%s_%05d.txt",
             file_name,
