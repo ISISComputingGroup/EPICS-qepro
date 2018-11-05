@@ -97,7 +97,7 @@
 class drvUSBQEPro : public asynPortDriver {
 
 public:
-    drvUSBQEPro(const char *portName, int maxArraySize, double laser);
+    drvUSBQEPro(const char *portName, int maxArraySize, double laser, int device_ind_);
 
     /* These are the methods that we override from asynPortDriver */
     virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
@@ -183,8 +183,8 @@ private:
 #endif
     static const int OOI_VENDOR_ID = 0x2457;
 
-    long *device_ids;
     long device_id;
+    long device_ind;
     long serial_number_feature_id;
     long spectrometer_feature_id;
     long usb_feature_id;

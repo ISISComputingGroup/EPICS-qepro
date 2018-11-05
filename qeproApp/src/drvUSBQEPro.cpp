@@ -32,7 +32,7 @@
 
 static const char *driverName="drvUSBQEPro";
 
-drvUSBQEPro::drvUSBQEPro(const char *portName, int maxPoints, double laser)
+drvUSBQEPro::drvUSBQEPro(const char *portName, int maxPoints, double laser, int device_ind_)
    : asynPortDriver(portName,
                     1, /* maxAddr */
                     (int)NUM_QEPRO_PARAMS,
@@ -43,6 +43,7 @@ drvUSBQEPro::drvUSBQEPro(const char *portName, int maxPoints, double laser)
                     0, /* Default priority */
                     0), /* Default stack size*/
     m_laser(laser),
+	device_ind(device_ind_),
     m_poll_time(POLL_TIME)
 {
     spec_index = 0;
@@ -1013,8 +1014,17 @@ void drvUSBQEPro::test_connection() {
 
             long * device_ids = (long *)calloc(number_of_devices, sizeof(long));
             api->getDeviceIDs(device_ids, number_of_devices);
-            // Assume only one device
+			std::cerr << "Found " << number_of_devices << " Ocean Optics devices with ids: ";
             device_id = device_ids[0];
+			for(int i=0; i<number_of_devices; ++i)
+			{
+				std::cerr << device_ids[i] << " ";
+				if (device_ids[i] == device_ind)
+				{
+                    device_id = device_ind;					
+				}
+			}
+			std::cerr << std::endl;
 
             asynPrint(pasynUserSelf,
                     ASYN_TRACE_FLOW,
@@ -1044,7 +1054,7 @@ void drvUSBQEPro::test_connection() {
                     (long *)calloc(num_spectrometer_features, sizeof(long));
 
                 api->getSpectrometerFeatures(
-                        device_ids[0],
+                        device_id,
                         &error,
                         spectrometer_feature_ids,
                         num_spectrometer_features);
@@ -1070,7 +1080,7 @@ void drvUSBQEPro::test_connection() {
                     (long *)calloc(num_usb_features, sizeof(long));
 
                 api->getRawUSBBusAccessFeatures(
-                        device_ids[0],
+                        device_id,
                         &error,
                         usb_feature_ids,
                         num_usb_features);
@@ -1546,8 +1556,8 @@ extern "C" {
     /** EPICS iocsh callable function to call constructor for the drvUSBQEPro class.
      *   * \param[in] portName The name of the asyn port driver to be created.
      *     * \param[in] maxPoints The maximum  number of points in the volt and time arrays */
-    int drvUSBQEProConfigure(const char *portName, int maxPoints, double laser) {
-        new drvUSBQEPro(portName, maxPoints, laser);
+    int drvUSBQEProConfigure(const char *portName, int maxPoints, double laser, int device_id) {
+        new drvUSBQEPro(portName, maxPoints, laser, device_id);
         return(asynSuccess);
     }
 
@@ -1557,16 +1567,18 @@ extern "C" {
     static const iocshArg initArg0 = { "portName", iocshArgString};
     static const iocshArg initArg1 = { "max points",iocshArgInt};
     static const iocshArg initArg2 = { "laser",iocshArgDouble};
+    static const iocshArg initArg3 = { "device id",iocshArgInt};
     static const iocshArg * const initArgs[] = {
         &initArg0,
         &initArg1,
-        &initArg2
+        &initArg2,
+		&initArg3
     };
 
-    static const iocshFuncDef initFuncDef = {"drvUSBQEProConfigure",3,initArgs};
+    static const iocshFuncDef initFuncDef = {"drvUSBQEProConfigure",sizeof(initArgs)/sizeof(iocshArg*),initArgs};
 
     static void initCallFunc(const iocshArgBuf *args) {
-        drvUSBQEProConfigure(args[0].sval, args[1].ival, args[2].dval);
+        drvUSBQEProConfigure(args[0].sval, args[1].ival, args[2].dval, args[3].ival);
     }
 
     void drvUSBQEProRegister(void) {
