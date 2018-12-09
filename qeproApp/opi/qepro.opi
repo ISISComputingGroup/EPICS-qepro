@@ -18,7 +18,7 @@
   <height>600</height>
   <macros>
     <include_parent_macros>true</include_parent_macros>
-    <PREFIX>cls</PREFIX>
+    <PREFIX>$(P)QEPRO_01</PREFIX>
   </macros>
   <name></name>
   <rules />
@@ -939,7 +939,7 @@ $(pv_value)</tooltip>
     </items>
     <items_from_pv>false</items_from_pv>
     <name>Combo_1</name>
-    <pv_name>$(PREFIX):Trigger</pv_name>
+    <pv_name>$(PREFIX):TriggerMode</pv_name>
     <pv_value />
     <rules />
     <scale_options>

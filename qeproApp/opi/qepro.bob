@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
   <macros>
-    <PREFIX>Sp1</PREFIX>
+    <PREFIX>$(P)QEPRO_01</PREFIX>
   </macros>
   <width>1300</width>
   <height>1100</height>
