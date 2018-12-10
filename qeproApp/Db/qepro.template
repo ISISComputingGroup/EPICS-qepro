@@ -127,8 +127,9 @@ record(ai, "$(PREFIX):BoxcarWidth_rbv") {
 record(ai, "$(PREFIX):CPUTemperature_rbv") {
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))CPUTemperature")
-	field(SCAN, "10 second")
-    field(PINI, "YES")
+# disable as causing problem
+#	field(SCAN, "10 second")
+#    field(PINI, "YES")
     field(EGU,  "C")
     field(PREC, "2")
 ##        field(SDIS, "Connection_rbv")
