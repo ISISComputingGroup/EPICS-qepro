@@ -1146,7 +1146,12 @@ void drvUSBQEPro::test_connection() {
             read_device_name();
             // Update PVs
             callParamCallbacks();
-
+			
+			std::string sn, devname;
+			getStringParam(P_serialNumber, sn);
+			getStringParam(P_name, devname);
+			std::cerr << "Device id " << device_id << " name " << devname << " serial number " << sn << std::endl;
+			
             // Allocate memory for spectra
             allocate_spectrum_buffer();
 
