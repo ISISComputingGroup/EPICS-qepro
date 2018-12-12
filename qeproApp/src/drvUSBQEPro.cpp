@@ -1505,7 +1505,7 @@ void drvUSBQEPro::write_header(
 
     strftime(text_buffer,
             BUF_SIZE,
-            "%FT%T%Z",
+            "%Y-%m-%dT%H:%M:%S%Z",
             timeinfo);
 
     outfile << "Date: " << text_buffer << std::endl;
